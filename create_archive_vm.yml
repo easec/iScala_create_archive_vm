@@ -49,8 +49,8 @@ variables:
   hyperVGeneration: "v2"
   vmSize: "Standard_DS1_v2"
   virtualMachineName: "easec-vm"
-  source_blob_OsDisk_1_snap: "snapshot/easec-vm_OsDisk_1_snap.vhd"
-  destination_blob_OsDisk_1_snap: "snapshot/easec-vm_OsDisk_1_Page_snap.vhd"
+  source_blob_OsDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_snap.vhd"
+  destination_blob_OsDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_Page_snap.vhd"
   clientId: "ab28e1f9-1ef7-4e68-a528-53452927dd07"
 
 stages:
@@ -67,8 +67,8 @@ stages:
          inlineScript: |              
           export AZCOPY_AUTO_LOGIN_TYPE=MSI
           export AZCOPY_MSI_CLIENT_ID=$clientId
-          $clientId
-          azcopy copy $source_blob_OsDisk_1_snap $destination_blob_OsDisk_1_snap --blob-type PageBlob
+          echo "$clientId"
+          azcopy copy "$source_blob_OsDisk_1_snap" "$destination_blob_OsDisk_1_snap" --blob-type PageBlob
           azcopy copy $source_blob_DataDisk_1_snap $destination_blob_DataDisk_1_snap --blob-type PageBlob
 
 - stage: Create_managed_disks
