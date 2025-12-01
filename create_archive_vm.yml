@@ -49,6 +49,8 @@ variables:
   hyperVGeneration: "v2"
   vmSize: "Standard_DS1_v2"
   virtualMachineName: "easec-vm"
+  source_blob_OsDisk_1_snap: "snapshot/easec-vm_OsDisk_1_snap.vhd"
+  destination_blob_OsDisk_1_snap: "snapshot/easec-vm_OsDisk_1_Page_snap.vhd"
   clientId: "ab28e1f9-1ef7-4e68-a528-53452927dd07"
 
 stages:
