@@ -65,8 +65,12 @@ stages:
          inlineScript: |              
           export AZCOPY_AUTO_LOGIN_TYPE=MSI
           export AZCOPY_MSI_CLIENT_ID=$clientId
-          azcopy copy $source_blob_OsDisk_1_snap $destination_blob_OsDisk_1_snap --blob-type PageBlob
-          azcopy copy $source_blob_DataDisk_1_snap $destination_blob_DataDisk_1_snap --blob-type PageBlob
+          azcopy copy $source_blob_OsDisk_1_snap $destination_blob_OsDisk_1_snap --blob-type=PageBlob
+          azcopy copy $source_blob_DataDisk_1_snap $destination_blob_DataDisk_1_snap --blob-type=PageBlob
+          
+          azcopy copy [source] [destination] [flags]
+
+
 
 - stage: Create_managed_disks
   jobs:
