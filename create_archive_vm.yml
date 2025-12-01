@@ -90,7 +90,7 @@ stages:
     steps:
      - task: AzureCLI@2
        inputs:
-         azureSubscription: 'connection_snapshottestsa'
+         azureSubscription: 'connection_snapshot-rg'
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
