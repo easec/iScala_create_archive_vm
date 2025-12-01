@@ -1,3 +1,4 @@
+
 # This pipeline will:
 # - Provision an Azure VM.
 # 
@@ -21,6 +22,7 @@
 # - hyperVGeneration         : Generation for HyperV (v1/v2).
 # - vmSize                   : Size for vm.
 # - virtualMachineName       : Name for vm.
+# - clientId                 : CLient-Id for the user managed identity
 #
 #
 # This pipeline also expects an Azure (Resource Manager) service connection in Azure DevOps with the name 'connection_snapshottestsa'.
@@ -47,6 +49,7 @@ variables:
   hyperVGeneration: "v2"
   vmSize: "Standard_DS1_v2"
   virtualMachineName: "easec-vm"
+  client-id: "ab28e1f9-1ef7-4e68-a528-53452927dd07"
 
 stages:
 
@@ -60,6 +63,7 @@ stages:
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
+          azcopy login --identity --identity-client-id "$(client-id)"
           azcopy copy "$(source_blob_OsDisk_1_snap)" "$(destination_blob_OsDisk_1_snap)" --blob-type PageBlob
           azcopy copy "$(source_blob_DataDisk_1_snap)" "$(destination_blob_DataDisk_1_snap)" --blob-type PageBlob
 
