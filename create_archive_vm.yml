@@ -51,7 +51,8 @@ variables:
   virtualMachineName: "easec-vm"
   source_blob_OsDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_snap.vhd"
   destination_blob_OsDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_Page_snap.vhd"
-  clientId: "ab28e1f9-1ef7-4e68-a528-53452927dd07"
+  source_blob_DataDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_DataDisk_1_snap.vhd"
+  destination_blob_DataDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_DataDisk_1_Page_snap.vhd"
 
 stages:
 
@@ -66,7 +67,7 @@ stages:
          scriptLocation: inlineScript
          inlineScript: |
           $Env:AZCOPY_AUTO_LOGIN_TYPE="MSI"
-          $Env:AZCOPY_MSI_CLIENT_ID="ab28e1f9-1ef7-4e68-a528-53452927dd07"
+          $Env:AZCOPY_MSI_CLIENT_ID="$(clientId)"
           azcopy copy "$(source_blob_OsDisk_1_snap)" "$(destination_blob_OsDisk_1_snap)" --blob-type PageBlob
           azcopy copy "$(source_blob_DataDisk_1_snap)" "$(destination_blob_DataDisk_1_snap)" --blob-type PageBlob
 
