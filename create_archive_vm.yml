@@ -49,7 +49,7 @@ variables:
   hyperVGeneration: "v2"
   vmSize: "Standard_DS1_v2"
   virtualMachineName: "easec-vm"
-  client-id: "ab28e1f9-1ef7-4e68-a528-53452927dd07"
+  clientId: "ab28e1f9-1ef7-4e68-a528-53452927dd07"
 
 stages:
 
@@ -63,7 +63,8 @@ stages:
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
-          azcopy login --identity --identity-client-id "$(client-id)"
+          export AZCOPY_AUTO_LOGIN_TYPE=MSI
+          export AZCOPY_MSI_CLIENT_ID="$(clientId)"
           azcopy copy "$(source_blob_OsDisk_1_snap)" "$(destination_blob_OsDisk_1_snap)" --blob-type PageBlob
           azcopy copy "$(source_blob_DataDisk_1_snap)" "$(destination_blob_DataDisk_1_snap)" --blob-type PageBlob
 
