@@ -71,6 +71,18 @@ stages:
           azcopy copy "$(source_blob_OsDisk_1_snap)" "$(destination_blob_OsDisk_1_snap)" --blob-type PageBlob
           azcopy copy "$(source_blob_DataDisk_1_snap)" "$(destination_blob_DataDisk_1_snap)" --blob-type PageBlob
 
+- stage: Create_resource_group
+  jobs:
+  - job:
+    steps:
+     - task: AzureCLI@2
+       inputs:
+         azureSubscription: 'connection_subscription'
+         scriptType: pscore
+         scriptLocation: inlineScript
+         inlineScript: |
+          az group create --location "$(location)" --name "$(resourceGroupName)"
+
 - stage: Create_managed_disks
   jobs:
   - job:
