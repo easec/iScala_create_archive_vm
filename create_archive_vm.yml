@@ -4,26 +4,7 @@
 # 
 # 
 #
-# The following variables need to be provided to the pipeline:
-#
-# - subscriptionId           : Subscription Id.
-# - resourceGroupName        : The name for the Resource Group where vm will be created.
-# - snapshotNameOs           : Name for snapshot containing the OS.
-# - snapshotNameData         : Name for snapshot containing the Data.
-# - location                 : Location for Managed Disks.
-# - osDiskName               : Name for Managed Disk containing the OS.
-# - dataDiskName             : Name for Managed Disk containing the data.
-# - diskSizeOs               : The size for disk containing OS.
-# - diskSizeData             : The size for disk containing data.
-# - vhdUriOS                 : Uri to image in Storage Account, for the OS.
-# - vhdUriData               : Uri to image in Storage Account, for the data.
-# - storageType              : Storage type for Managed Disk
-# - osType                   : Type of OS (linux, windows)
-# - hyperVGeneration         : Generation for HyperV (v1/v2).
-# - vmSize                   : Size for vm.
-# - virtualMachineName       : Name for vm.
-# - clientId                 : CLient-Id for the user managed identity
-#
+# The variables are provided to the pipeline from Variable group: variable_iScaleArchive.
 #
 # This pipeline also expects an Azure (Resource Manager) service connection in Azure DevOps with the name 'connection_snapshottestsa'.
 
@@ -33,26 +14,10 @@ pr: none
 
 pool:
   name: easec-pool
-  
+
 variables:
-  subscriptionId: "0ac447d7-fbc3-4d3d-84d4-37bb9a71e089"
-  resourceGroupName: "snapshot-rg"
-  location: "swedencentral"
-  osDiskName: "easec-vm_OsDisk_1_man"
-  dataDiskName: "easec-vm_DataDisk_1_man"
-  diskSizeOs: 128
-  diskSizeData: 40
-  vhdUriOS: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_Page_snap.vhd"
-  vhdUriData: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_DataDisk_1_Page_snap.vhd"
-  storageType: "Premium_LRS"
-  osType: "windows"
-  hyperVGeneration: "v2"
-  vmSize: "Standard_DS1_v2"
-  virtualMachineName: "easec-vm"
-  source_blob_OsDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_snap.vhd"
-  destination_blob_OsDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_OsDisk_1_Page_snap.vhd"
-  source_blob_DataDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_DataDisk_1_snap.vhd"
-  destination_blob_DataDisk_1_snap: "https://snapshottestsa.blob.core.windows.net/snapshot/easec-vm_DataDisk_1_Page_snap.vhd"
+- group: variable_iScaleArchive
+  
 
 stages:
 
@@ -68,8 +33,8 @@ stages:
          inlineScript: |
           $Env:AZCOPY_AUTO_LOGIN_TYPE="MSI"
           $Env:AZCOPY_MSI_CLIENT_ID="$(clientId)"
-          azcopy copy "$(source_blob_OsDisk_1_snap)" "$(destination_blob_OsDisk_1_snap)" --blob-type PageBlob
-          azcopy copy "$(source_blob_DataDisk_1_snap)" "$(destination_blob_DataDisk_1_snap)" --blob-type PageBlob
+          azcopy copy "$(sourceBlobOs)" "$(destinationBlobOs)" --blob-type PageBlob
+          azcopy copy "$(sourceBlobData)" "$(destinationBlobData)" --blob-type PageBlob
 
 - stage: Create_resource_group
   jobs:
@@ -81,7 +46,7 @@ stages:
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
-          az group create --location "$(location)" --name "$(resourceGroupName)"
+          az group create --location "$(rgLocation)" --name "$(resourceGroupName)"
 
 - stage: Create_managed_disks
   jobs:
@@ -93,8 +58,8 @@ stages:
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
-          az disk create --resource-group "$(resourceGroupName)" --name "$(osDiskName)" --sku "$(storageType)" --location "$(location)" --size-gb "$(diskSizeOs)" --source "$(vhdUriOS)"
-          az disk create --resource-group "$(resourceGroupName)" --name "$(dataDiskName)" --sku "$(storageType)" --location "$(location)" --size-gb "$(diskSizeData)" --source "$(vhdUriData)"
+          az disk create --resource-group "$(resourceGroupName)" --name "$(osDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeOs)" --source "$(vhdUriOS)"
+          az disk create --resource-group "$(resourceGroupName)" --name "$(dataDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeData)" --source "$(vhdUriData)"
 
 - stage: Create_vm
   jobs:
