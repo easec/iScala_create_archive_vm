@@ -58,8 +58,8 @@ stages:
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
-          az disk create --resource-group "$(resourceGroupName)" --name "$(osDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeOs)" --source "$(vhdUriOS)"
-          az disk create --resource-group "$(resourceGroupName)" --name "$(dataDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeData)" --source "$(vhdUriData)"
+          az disk create --resource-group "$(resourceGroupName)" --name "$(osDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeOs)" --source "$(destinationBlobOsDisk1Snap)"
+          az disk create --resource-group "$(resourceGroupName)" --name "$(dataDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeData)" --source "$(destinationBlobDataDisk1Snap)"
 
 - stage: Create_vm
   jobs:
