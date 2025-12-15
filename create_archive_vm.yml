@@ -21,7 +21,7 @@ variables:
 
 stages:
 
-- stage: Convert_block_blobs_to_page_blobs
+- stage: convert_block_blobs_to_page_blobs
   jobs:
   - job:
     steps:
@@ -36,7 +36,7 @@ stages:
           azcopy copy "$(sourceBlobOsDisk1Snap)" "$(destinationBlobOsDisk1Snap)" --blob-type PageBlob
           azcopy copy "$(sourceBlobDataDisk1Snap)" "$(destinationBlobDataDisk1Snap)" --blob-type PageBlob
 
-- stage: Create_resource_group
+- stage: create_resource_group
   jobs:
   - job:
     steps:
@@ -48,7 +48,7 @@ stages:
          inlineScript: |
           az group create --location "$(rgLocation)" --name "$(resourceGroupName)"
 
-- stage: Create_managed_disks
+- stage: create_managed_disks
   jobs:
   - job:
     steps:
@@ -61,7 +61,7 @@ stages:
           az disk create --resource-group "$(resourceGroupName)" --name "$(osDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeOs)" --source "$(destinationBlobOsDisk1Snap)"
           az disk create --resource-group "$(resourceGroupName)" --name "$(dataDiskName)" --sku "$(storageType)" --location "$(vmLocation)" --size-gb "$(diskSizeData)" --source "$(destinationBlobDataDisk1Snap)"
 
-- stage: Create_vm
+- stage: create_vm
   jobs:
   - job:
     steps:
