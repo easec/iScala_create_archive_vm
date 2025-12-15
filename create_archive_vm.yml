@@ -1,13 +1,18 @@
 
 # This pipeline will:
-# - Provision an Azure VM.
+# - Convert block blobs to page blobs.
+# - Create Resource Group.
+# - Create Managed Disks.
+# - Create Azure VM.
 # 
 # 
 #
-# The variables are provided to the pipeline from Variable group: variable_iScaleArchive.
+# The variables is provided by Variable group with the name: variable_iScaleArchive
 #
-# This pipeline also expects an Azure (Resource Manager) service connection in Azure DevOps with the name 'connection_snapshottestsa'.
-
+#
+# Pipeline are used with User assigned managed identity
+#
+# This pipeline also expects Azure (Resource Manager) service connections in Azure DevOps with the name 'connection_snapshottestsa' and 'connection_subscription' , using Workload Identity federation (manual). This service connections must have been set up in the Project Settings.
 
 trigger: none
 pr: none
