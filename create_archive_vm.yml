@@ -37,7 +37,8 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
           $Env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
-          $Env:AZCOPY_TENANT_ID="$(tenantId)"   # set this to your Entra tenant ID
+          # $Env:AZCOPY_TENANT_ID="$(tenantId)"   # set this to your Entra tenant ID
+          $Env:AZCOPY_TENANT_ID="1a767a0e-f03b-4eb0-94ff-09f9a4436c42"
           azcopy copy "$(sourceBlobOsDisk1Snap)" "$(destinationBlobOsDisk1Snap)" --blob-type PageBlob
           azcopy copy "$(sourceBlobDataDisk1Snap)" "$(destinationBlobDataDisk1Snap)" --blob-type PageBlob
 
