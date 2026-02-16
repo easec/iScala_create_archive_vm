@@ -30,17 +30,17 @@ stages:
   jobs:
   - job:
     steps:
-     - task: AzureCLI@2
-       inputs:
-         # azureSubscription: 'connection_snapshottestsa'
-         azureSubscription: 'Azure-Service-Connection-Sub'
-         scriptType: pscore
-         scriptLocation: inlineScript
-         inlineScript: |
-          $Env:AZCOPY_AUTO_LOGIN_TYPE="MSI"
-          $Env:AZCOPY_MSI_CLIENT_ID="$(clientId)"
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Azure-Service-Connection-Sub'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          $Env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
+          $Env:AZCOPY_TENANT_ID="$(tenantId)"   # set this to your Entra tenant ID
           azcopy copy "$(sourceBlobOsDisk1Snap)" "$(destinationBlobOsDisk1Snap)" --blob-type PageBlob
           azcopy copy "$(sourceBlobDataDisk1Snap)" "$(destinationBlobDataDisk1Snap)" --blob-type PageBlob
+
 
 - stage: create_resource_group
   jobs:
