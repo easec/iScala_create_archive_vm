@@ -33,7 +33,7 @@ stages:
      - task: AzureCLI@2
        inputs:
          # azureSubscription: 'connection_snapshottestsa'
-         azureSubscription: 'connection_snapshottestsa'
+         azureSubscription: 'connection_subscription'
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
@@ -60,7 +60,7 @@ stages:
     steps:
      - task: AzureCLI@2
        inputs:
-         azureSubscription: 'connection_snapshot-rg'
+         azureSubscription: 'connection_subscription'
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
@@ -73,7 +73,7 @@ stages:
     steps:
      - task: AzureCLI@2
        inputs:
-         azureSubscription: 'connection_snapshot-rg'
+         azureSubscription: 'connection_subscription'
          scriptType: pscore
          scriptLocation: inlineScript
          inlineScript: |
